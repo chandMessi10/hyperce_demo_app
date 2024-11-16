@@ -9,11 +9,14 @@ import 'package:hyperce_demo_app/features/products/domain/entities/product_list_
 class ProductRepository {
   final _dioClient = getIt.get<DioClient>();
 
-  Future<Either<ProductListResponse, String>> fetchProductCollection() async {
-    const String query = '''
+  Future<Either<ProductListResponse, String>> fetchProductCollection(
+    int skipValue,
+  ) async {
+    String query = '''
       query GetProductCollection {
         collections(
           options: {
+            skip: $skipValue
             take: 10
             filter: {  }
             sort: { name: ASC }
@@ -54,11 +57,13 @@ class ProductRepository {
 
   Future<Either<ProductListResponse, String>> fetchProductList(
     String collectionName,
+    int skipValue,
   ) async {
     String query = '''
       query GetProductList {
         products(
           options: {
+            skip: $skipValue
             take: 10
             filter: { name: { contains: "${collectionName.toLowerCase()}" } }
             sort: { name: ASC }

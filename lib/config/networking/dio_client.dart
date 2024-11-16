@@ -28,7 +28,7 @@ class DioClient {
 
   void setBaseUrl() async {
     _dio.options = BaseOptions(
-      baseUrl: "https://readonlydemo.vendure.io/",
+      baseUrl: "https://admin.hyperce.io/",
       connectTimeout: const Duration(seconds: 60),
       receiveTimeout: const Duration(seconds: 60),
       headers: {
