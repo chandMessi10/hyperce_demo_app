@@ -3,13 +3,14 @@ import 'package:dio/dio.dart';
 import 'package:hyperce_demo_app/config/networking/dio_client.dart';
 import 'package:hyperce_demo_app/config/networking/dio_exception_handler.dart';
 import 'package:hyperce_demo_app/config/services/locator.dart';
+import 'package:hyperce_demo_app/features/products/domain/entities/collection_response.dart';
 import 'package:hyperce_demo_app/features/products/domain/entities/product_detail_response.dart';
 import 'package:hyperce_demo_app/features/products/domain/entities/product_list_response.dart';
 
 class ProductRepository {
   final _dioClient = getIt.get<DioClient>();
 
-  Future<Either<ProductListResponse, String>> fetchProductCollection(
+  Future<Either<CollectionResponse, String>> fetchProductCollection(
     int skipValue,
   ) async {
     String query = '''
@@ -44,7 +45,7 @@ class ProductRepository {
       );
       final data = response.data['data']?['collections'];
       if (data != null) {
-        return Left(ProductListResponse.fromJson(data));
+        return Left(CollectionResponse.fromJson(data));
       } else {
         return const Right('No data found in the response.');
       }
@@ -74,6 +75,11 @@ class ProductRepository {
             id
             name
             slug
+            variants {
+              price
+              stockLevel
+              sku
+            }
             featuredAsset {
               preview
               mimeType
@@ -114,6 +120,11 @@ class ProductRepository {
           featuredAsset {
             preview
             mimeType
+          }
+          variants {
+              price
+              stockLevel
+              sku
           }
           description
         }

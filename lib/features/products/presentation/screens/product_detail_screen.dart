@@ -45,54 +45,98 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       scaffoldBody: _productDetailController.obx(
         (state) {
           final productDetail = state;
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CachedNetworkImage(
-                  imageUrl: productDetail?.featuredAsset?.preview ?? "",
-                  width: context.mqSize.width,
-                  height: 400,
-                  fit: BoxFit.cover,
-                  errorWidget: (context, url, error) {
-                    return const SizedBox(
-                      child: Icon(
-                        Icons.image,
-                        size: 50,
-                      ),
-                    );
-                  },
-                  progressIndicatorBuilder: (context, url, progress) =>
-                      const Center(
-                    child: CircularProgressIndicator.adaptive(),
+          return RefreshIndicator(
+            onRefresh: () async {
+              fetchProductDetail();
+            },
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CachedNetworkImage(
+                    imageUrl: productDetail?.featuredAsset?.preview ?? "",
+                    width: context.mqSize.width,
+                    height: 400,
+                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) {
+                      return const SizedBox(
+                        child: Icon(
+                          Icons.image,
+                          size: 50,
+                        ),
+                      );
+                    },
+                    progressIndicatorBuilder: (context, url, progress) =>
+                        const Center(
+                      child: CircularProgressIndicator.adaptive(),
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "${productDetail?.name}",
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      sizedBoxHeight(10),
-                      Text(
-                        "Description",
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                      sizedBoxHeight(4),
-                      Text(
-                        "${productDetail?.description}",
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "${productDetail?.name}",
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                        sizedBoxHeight(10),
+                        Text(
+                          "Price \$ ${productDetail?.variants?.first.price}",
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                        sizedBoxHeight(10),
+                        Text(
+                          "Description",
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                        sizedBoxHeight(4),
+                        Text(
+                          "${productDetail?.description}",
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        sizedBoxHeight(16),
+                        extraSpecialWidget(
+                          context,
+                          Icons.public,
+                          "Worldwide shipping",
+                        ),
+                        sizedBoxHeight(2),
+                        extraSpecialWidget(
+                          context,
+                          Icons.payment,
+                          "100% Secure Payment",
+                        ),
+                        sizedBoxHeight(2),
+                        extraSpecialWidget(
+                          context,
+                          Icons.people,
+                          "Made by professionals",
+                        ),
+                        Container(
+                          height: 80,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 0,
+                            vertical: 16,
+                          ),
+                          width: context.mqSize.width,
+                          child: FilledButton(
+                            onPressed: () {},
+                            child: const Text("Add to cart"),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },
@@ -105,6 +149,28 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           },
         ),
       ),
+    );
+  }
+
+  Row extraSpecialWidget(
+    BuildContext context,
+    IconData iconData,
+    String label,
+  ) {
+    return Row(
+      children: [
+        Icon(
+          iconData,
+          size: 18,
+        ),
+        sizedBoxWidth(4),
+        Expanded(
+          child: Text(
+            label,
+            style: Theme.of(context).textTheme.labelMedium,
+          ),
+        ),
+      ],
     );
   }
 }

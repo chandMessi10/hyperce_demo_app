@@ -92,7 +92,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                     crossAxisCount: 2,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
-                    childAspectRatio: 176 / 190,
+                    childAspectRatio: 154 / 190,
                   ),
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
@@ -105,81 +105,88 @@ class _ProductListScreenState extends State<ProductListScreen> {
                         onTap: () {
                           context.push('/productDetail/${productData.id}');
                         },
-                        child: SizedBox(
-                          width: 176,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SizedBox(
-                                height: 150,
-                                child: ClipRRect(
-                                  borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(16),
-                                    topRight: Radius.circular(16),
-                                  ),
-                                  child: CachedNetworkImage(
-                                    imageUrl:
-                                        productData.featuredAsset?.preview ??
-                                            "",
-                                    height: 150,
-                                    width: 176,
-                                    fit: BoxFit.cover,
-                                    errorWidget: (context, url, error) {
-                                      return const SizedBox(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              height: 150,
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(16),
+                                  topRight: Radius.circular(16),
+                                ),
+                                child: CachedNetworkImage(
+                                  imageUrl:
+                                      productData.featuredAsset?.preview ?? "",
+                                  height: 150,
+                                  width: 176,
+                                  fit: BoxFit.cover,
+                                  errorWidget: (context, url, error) {
+                                    return const SizedBox(
+                                      height: 150,
+                                      width: 176,
+                                      child: Icon(
+                                        Icons.image,
+                                        size: 50,
+                                      ),
+                                    );
+                                  },
+                                  progressIndicatorBuilder:
+                                      (context, url, progress) {
+                                    return Shimmer.fromColors(
+                                      baseColor: Colors.white,
+                                      highlightColor: Colors.grey,
+                                      child: Container(
+                                        color: Theme.of(context)
+                                            .primaryColor
+                                            .withOpacity(0.2),
                                         height: 150,
                                         width: 176,
-                                        child: Icon(
-                                          Icons.image,
-                                          size: 50,
-                                        ),
-                                      );
-                                    },
-                                    progressIndicatorBuilder:
-                                        (context, url, progress) {
-                                      return Shimmer.fromColors(
-                                        baseColor: Colors.white,
-                                        highlightColor: Colors.grey,
-                                        child: Container(
-                                          color: Theme.of(context)
-                                              .primaryColor
-                                              .withOpacity(0.2),
-                                          height: 150,
-                                          width: 176,
-                                        ),
-                                      );
-                                    },
-                                  ),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 6,
-                                  vertical: 2,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      productData.name ?? "N/A",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium
-                                          ?.copyWith(
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      textScaler: TextScaler.noScaling,
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 6,
+                                vertical: 2,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    "\$ ${productData.variants?.first.price}",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    textScaler: TextScaler.noScaling,
+                                  ),
+                                  sizedBoxHeight(2),
+                                  Text(
+                                    productData.name ?? "N/A",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    textScaler: TextScaler.noScaling,
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
                         ),
                       ),
                     );

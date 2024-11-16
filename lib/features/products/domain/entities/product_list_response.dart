@@ -19,8 +19,9 @@ class Product {
   final String? name;
   final String? slug;
   final FeaturedAsset? featuredAsset;
+  final List<Variant>? variants;
 
-  Product({this.id, this.name, this.slug, this.featuredAsset});
+  Product({this.id, this.name, this.slug, this.featuredAsset, this.variants});
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
@@ -32,6 +33,9 @@ class Product {
               json['featuredAsset'] as Map<String, dynamic>,
             )
           : null,
+      variants: (json['variants'] as List<dynamic>?)
+          ?.map((variant) => Variant.fromJson(variant as Map<String, dynamic>))
+          .toList(),
     );
   }
 }
@@ -50,6 +54,22 @@ class FeaturedAsset {
       mimeType: json['mimeType'] as String?,
       width: json['width'] as int?,
       height: json['height'] as int?,
+    );
+  }
+}
+
+class Variant {
+  final int? price;
+  final String? stockLevel;
+  final String? sku;
+
+  Variant({this.price, this.stockLevel, this.sku});
+
+  factory Variant.fromJson(Map<String, dynamic> json) {
+    return Variant(
+      price: json['price'] as int?,
+      stockLevel: json['stockLevel'] as String?,
+      sku: json['sku'] as String?,
     );
   }
 }

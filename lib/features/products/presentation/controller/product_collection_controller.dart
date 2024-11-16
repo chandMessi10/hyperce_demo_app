@@ -2,12 +2,12 @@ import 'package:get/get.dart';
 import 'package:hyperce_demo_app/config/services/locator.dart';
 import 'package:hyperce_demo_app/core/enums/base_state_enum.dart';
 import 'package:hyperce_demo_app/features/products/data/product_repository.dart';
-import 'package:hyperce_demo_app/features/products/domain/entities/product_list_response.dart';
+import 'package:hyperce_demo_app/features/products/domain/entities/collection_response.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 class ProductCollectionController extends GetxController {
   Rx<BaseState> productCollectionApiState = BaseState.initial.obs;
-  RxList<Product> productCollectionList = <Product>[].obs;
+  RxList<CollectionProduct> productCollectionList = <CollectionProduct>[].obs;
   RxInt skip = 0.obs;
 
   Future<void> getProductCollection(
