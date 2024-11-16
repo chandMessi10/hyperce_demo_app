@@ -78,7 +78,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "${productDetail?.name}",
+                          "${productDetail?.name} | ${productDetail?.variants?.first.sku} |",
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                         sizedBoxHeight(10),
@@ -90,6 +90,33 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   ),
                         ),
                         sizedBoxHeight(10),
+                        if (productDetail?.variants != null &&
+                            productDetail!.variants!.isNotEmpty) ...[
+                          if (productDetail.variants!.first.stockLevel ==
+                              "IN_STOCK")
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Colors.greenAccent.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 6,
+                                vertical: 2,
+                              ),
+                              child: Text(
+                                "In-Stock",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelMedium
+                                    ?.copyWith(
+                                      color: Colors.green,
+                                    ),
+                              ),
+                            )
+                          else
+                            const SizedBox(),
+                          sizedBoxHeight(10),
+                        ],
                         Text(
                           "Description",
                           style:
