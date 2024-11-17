@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:hyperce_demo_app/config/graphql/graphql_queries.dart';
 import 'package:hyperce_demo_app/config/networking/dio_client.dart';
 import 'package:hyperce_demo_app/config/networking/dio_exception_handler.dart';
 import 'package:hyperce_demo_app/config/services/locator.dart';
@@ -13,31 +14,7 @@ class ProductRepository {
   Future<Either<CollectionResponse, String>> fetchProductCollection(
     int skipValue,
   ) async {
-    String query = '''
-      query GetProductCollection {
-        collections(
-          options: {
-            skip: $skipValue
-            take: 10
-            filter: {  }
-            sort: { name: ASC }
-          }
-        ) {
-          totalItems
-          items {
-            id
-            name
-            slug
-            featuredAsset {
-              preview
-              mimeType
-              width
-              height
-            }
-          }
-        }
-      }
-    ''';
+    String query = GraphQLQueries.getProductCollection(skipValue);
     try {
       final response = await _dioClient.dio.post(
         'shop-api',
@@ -60,36 +37,7 @@ class ProductRepository {
     String collectionName,
     int skipValue,
   ) async {
-    String query = '''
-      query GetProductList {
-        products(
-          options: {
-            skip: $skipValue
-            take: 10
-            filter: { name: { contains: "${collectionName.toLowerCase()}" } }
-            sort: { name: ASC }
-          }
-        ) {
-          totalItems
-          items {
-            id
-            name
-            slug
-            variants {
-              price
-              stockLevel
-              sku
-            }
-            featuredAsset {
-              preview
-              mimeType
-              width
-              height
-            }
-          }
-        }
-      }
-    ''';
+    String query = GraphQLQueries.getProductList(skipValue, collectionName);
     try {
       final response = await _dioClient.dio.post(
         'shop-api',
@@ -111,25 +59,7 @@ class ProductRepository {
   Future<Either<ProductDetailResponse, String>> fetchProductDetail(
     String productId,
   ) async {
-    String query = '''
-      query GetProductDetail {
-        product(id: "$productId") {
-          id
-          name
-          slug
-          featuredAsset {
-            preview
-            mimeType
-          }
-          variants {
-              price
-              stockLevel
-              sku
-          }
-          description
-        }
-      }
-    ''';
+    String query = GraphQLQueries.getProductDetail(productId);
     try {
       final response = await _dioClient.dio.post(
         'shop-api',

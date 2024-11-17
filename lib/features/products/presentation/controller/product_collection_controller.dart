@@ -15,6 +15,7 @@ class ProductCollectionController extends GetxController {
     bool isLoadMore,
   ) async {
     if (!isLoadMore) {
+      skip.value = 0;
       productCollectionList.clear();
       productCollectionApiState.value = BaseState.loading;
     }

@@ -1,57 +1,41 @@
-class CollectionResponse {
-  final int? totalItems;
-  final List<CollectionProduct>? items;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  CollectionResponse({this.totalItems, this.items});
+part 'collection_response.freezed.dart';
+part 'collection_response.g.dart';
 
-  factory CollectionResponse.fromJson(Map<String, dynamic> json) {
-    return CollectionResponse(
-      totalItems: json['totalItems'] as int?,
-      items: (json['items'] as List<dynamic>?)
-          ?.map((item) =>
-              CollectionProduct.fromJson(item as Map<String, dynamic>))
-          .toList(),
-    );
-  }
+@freezed
+class CollectionResponse with _$CollectionResponse {
+  const factory CollectionResponse({
+    int? totalItems,
+    List<CollectionProduct>? items,
+  }) = _CollectionResponse;
+
+  factory CollectionResponse.fromJson(Map<String, dynamic> json) =>
+      _$CollectionResponseFromJson(json);
 }
 
-class CollectionProduct {
-  final String? id;
-  final String? name;
-  final String? slug;
-  final CollectionFeaturedAsset? featuredAsset;
+@freezed
+class CollectionProduct with _$CollectionProduct {
+  const factory CollectionProduct({
+    String? id,
+    String? name,
+    String? slug,
+    CollectionFeaturedAsset? featuredAsset,
+  }) = _CollectionProduct;
 
-  CollectionProduct({this.id, this.name, this.slug, this.featuredAsset});
-
-  factory CollectionProduct.fromJson(Map<String, dynamic> json) {
-    return CollectionProduct(
-      id: json['id'] as String?,
-      name: json['name'] as String?,
-      slug: json['slug'] as String?,
-      featuredAsset: json['featuredAsset'] != null
-          ? CollectionFeaturedAsset.fromJson(
-              json['featuredAsset'] as Map<String, dynamic>,
-            )
-          : null,
-    );
-  }
+  factory CollectionProduct.fromJson(Map<String, dynamic> json) =>
+      _$CollectionProductFromJson(json);
 }
 
-class CollectionFeaturedAsset {
-  final String? preview;
-  final String? mimeType;
-  final int? width;
-  final int? height;
+@freezed
+class CollectionFeaturedAsset with _$CollectionFeaturedAsset {
+  const factory CollectionFeaturedAsset({
+    String? preview,
+    String? mimeType,
+    int? width,
+    int? height,
+  }) = _CollectionFeaturedAsset;
 
-  CollectionFeaturedAsset(
-      {this.preview, this.mimeType, this.width, this.height});
-
-  factory CollectionFeaturedAsset.fromJson(Map<String, dynamic> json) {
-    return CollectionFeaturedAsset(
-      preview: json['preview'] as String?,
-      mimeType: json['mimeType'] as String?,
-      width: json['width'] as int?,
-      height: json['height'] as int?,
-    );
-  }
+  factory CollectionFeaturedAsset.fromJson(Map<String, dynamic> json) =>
+      _$CollectionFeaturedAssetFromJson(json);
 }

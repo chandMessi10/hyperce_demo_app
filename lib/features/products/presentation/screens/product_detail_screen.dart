@@ -1,13 +1,15 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:hyperce_demo_app/config/services/locator.dart';
+import 'package:hyperce_demo_app/core/custom_widgets/custom_cached_network_image.dart';
+import 'package:hyperce_demo_app/core/custom_widgets/custom_filled_button.dart';
 import 'package:hyperce_demo_app/core/custom_widgets/custom_scaffold.dart';
 import 'package:hyperce_demo_app/core/extensions/build_context_extensions.dart';
 import 'package:hyperce_demo_app/core/utils/custom_sized_box.dart';
 import 'package:hyperce_demo_app/features/products/presentation/controller/product_detail_controller.dart';
 import 'package:hyperce_demo_app/features/products/presentation/widgets/custom_error_widget.dart';
+import 'package:hyperce_demo_app/features/products/presentation/widgets/stock_status_widget.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   const ProductDetailScreen({super.key, required this.productId});
@@ -53,23 +55,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CachedNetworkImage(
+                  CustomCachedNetworkImage(
                     imageUrl: productDetail?.featuredAsset?.preview ?? "",
-                    width: context.mqSize.width,
-                    height: 400,
-                    fit: BoxFit.cover,
-                    errorWidget: (context, url, error) {
-                      return const SizedBox(
-                        child: Icon(
-                          Icons.image,
-                          size: 50,
-                        ),
-                      );
-                    },
-                    progressIndicatorBuilder: (context, url, progress) =>
-                        const Center(
-                      child: CircularProgressIndicator.adaptive(),
-                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16),
@@ -94,25 +81,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             productDetail!.variants!.isNotEmpty) ...[
                           if (productDetail.variants!.first.stockLevel ==
                               "IN_STOCK")
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.greenAccent.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 6,
-                                vertical: 2,
-                              ),
-                              child: Text(
-                                "In-Stock",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelMedium
-                                    ?.copyWith(
-                                      color: Colors.green,
-                                    ),
-                              ),
-                            )
+                            const StockStatusWidget()
                           else
                             const SizedBox(),
                           sizedBoxHeight(10),
@@ -147,17 +116,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           Icons.people,
                           "Made by professionals",
                         ),
-                        Container(
-                          height: 80,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 0,
-                            vertical: 16,
-                          ),
-                          width: context.mqSize.width,
-                          child: FilledButton(
-                            onPressed: () {},
-                            child: const Text("Add to cart"),
-                          ),
+                        sizedBoxHeight(24),
+                        CustomFilledButton(
+                          onPressedFunction: () {
+                            context.showCustomSnackBar(
+                              message: "Added to cart",
+                            );
+                          },
+                          buttonLabel: 'Add to cart',
                         ),
                       ],
                     ),

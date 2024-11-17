@@ -1,75 +1,54 @@
-class ProductListResponse {
-  final int? totalItems;
-  final List<Product>? items;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  ProductListResponse({this.totalItems, this.items});
+part 'product_list_response.freezed.dart';
+part 'product_list_response.g.dart';
 
-  factory ProductListResponse.fromJson(Map<String, dynamic> json) {
-    return ProductListResponse(
-      totalItems: json['totalItems'] as int?,
-      items: (json['items'] as List<dynamic>?)
-          ?.map((item) => Product.fromJson(item as Map<String, dynamic>))
-          .toList(),
-    );
-  }
+@freezed
+class ProductListResponse with _$ProductListResponse {
+  const factory ProductListResponse({
+    int? totalItems,
+    List<Product>? items,
+  }) = _ProductListResponse;
+
+  factory ProductListResponse.fromJson(Map<String, dynamic> json) =>
+      _$ProductListResponseFromJson(json);
 }
 
-class Product {
-  final String? id;
-  final String? name;
-  final String? slug;
-  final FeaturedAsset? featuredAsset;
-  final List<Variant>? variants;
+@freezed
+class Product with _$Product {
+  const factory Product({
+    String? id,
+    String? name,
+    String? slug,
+    FeaturedAsset? featuredAsset,
+    List<Variant>? variants,
+  }) = _Product;
 
-  Product({this.id, this.name, this.slug, this.featuredAsset, this.variants});
-
-  factory Product.fromJson(Map<String, dynamic> json) {
-    return Product(
-      id: json['id'] as String?,
-      name: json['name'] as String?,
-      slug: json['slug'] as String?,
-      featuredAsset: json['featuredAsset'] != null
-          ? FeaturedAsset.fromJson(
-              json['featuredAsset'] as Map<String, dynamic>,
-            )
-          : null,
-      variants: (json['variants'] as List<dynamic>?)
-          ?.map((variant) => Variant.fromJson(variant as Map<String, dynamic>))
-          .toList(),
-    );
-  }
+  factory Product.fromJson(Map<String, dynamic> json) =>
+      _$ProductFromJson(json);
 }
 
-class FeaturedAsset {
-  final String? preview;
-  final String? mimeType;
-  final int? width;
-  final int? height;
+@freezed
+class FeaturedAsset with _$FeaturedAsset {
+  const factory FeaturedAsset({
+    String? preview,
+    String? mimeType,
+    int? width,
+    int? height,
+  }) = _FeaturedAsset;
 
-  FeaturedAsset({this.preview, this.mimeType, this.width, this.height});
-
-  factory FeaturedAsset.fromJson(Map<String, dynamic> json) {
-    return FeaturedAsset(
-      preview: json['preview'] as String?,
-      mimeType: json['mimeType'] as String?,
-      width: json['width'] as int?,
-      height: json['height'] as int?,
-    );
-  }
+  factory FeaturedAsset.fromJson(Map<String, dynamic> json) =>
+      _$FeaturedAssetFromJson(json);
 }
 
-class Variant {
-  final int? price;
-  final String? stockLevel;
-  final String? sku;
+@freezed
+class Variant with _$Variant {
+  const factory Variant({
+    int? price,
+    String? stockLevel,
+    String? sku,
+  }) = _Variant;
 
-  Variant({this.price, this.stockLevel, this.sku});
-
-  factory Variant.fromJson(Map<String, dynamic> json) {
-    return Variant(
-      price: json['price'] as int?,
-      stockLevel: json['stockLevel'] as String?,
-      sku: json['sku'] as String?,
-    );
-  }
+  factory Variant.fromJson(Map<String, dynamic> json) =>
+      _$VariantFromJson(json);
 }

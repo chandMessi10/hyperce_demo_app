@@ -1,63 +1,42 @@
-import 'package:hyperce_demo_app/features/products/domain/entities/product_list_response.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class ProductDetailResponse {
-  final String? id;
-  final String? name;
-  final String? slug;
-  final FeaturedAsset? featuredAsset;
-  final String? description;
-  final List<Variant>? variants;
+part 'product_detail_response.freezed.dart';
+part 'product_detail_response.g.dart';
 
-  ProductDetailResponse({
-    this.id,
-    this.name,
-    this.slug,
-    this.featuredAsset,
-    this.description,
-    this.variants,
-  });
+@freezed
+class ProductDetailResponse with _$ProductDetailResponse {
+  const factory ProductDetailResponse({
+    String? id,
+    String? name,
+    String? slug,
+    FeaturedAsset? featuredAsset,
+    String? description,
+    List<Variant>? variants,
+  }) = _ProductDetailResponse;
 
   factory ProductDetailResponse.fromJson(Map<String, dynamic> json) =>
-      ProductDetailResponse(
-        id: json["id"],
-        name: json["name"],
-        slug: json["slug"],
-        featuredAsset: json["featuredAsset"] == null
-            ? null
-            : FeaturedAsset.fromJson(json["featuredAsset"]),
-        description: json["description"],
-        variants: (json['variants'] as List<dynamic>?)
-            ?.map(
-                (variant) => Variant.fromJson(variant as Map<String, dynamic>))
-            .toList(),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "slug": slug,
-        "featuredAsset": featuredAsset?.toJson(),
-        "description": description,
-        "variants": variants,
-      };
+      _$ProductDetailResponseFromJson(json);
 }
 
-class FeaturedAsset {
-  final String? preview;
-  final String? mimeType;
+@freezed
+class FeaturedAsset with _$FeaturedAsset {
+  const factory FeaturedAsset({
+    String? preview,
+    String? mimeType,
+  }) = _FeaturedAsset;
 
-  FeaturedAsset({
-    this.preview,
-    this.mimeType,
-  });
+  factory FeaturedAsset.fromJson(Map<String, dynamic> json) =>
+      _$FeaturedAssetFromJson(json);
+}
 
-  factory FeaturedAsset.fromJson(Map<String, dynamic> json) => FeaturedAsset(
-        preview: json["preview"],
-        mimeType: json["mimeType"],
-      );
+@freezed
+class Variant with _$Variant {
+  const factory Variant({
+    int? price,
+    String? stockLevel,
+    String? sku,
+  }) = _Variant;
 
-  Map<String, dynamic> toJson() => {
-        "preview": preview,
-        "mimeType": mimeType,
-      };
+  factory Variant.fromJson(Map<String, dynamic> json) =>
+      _$VariantFromJson(json);
 }
